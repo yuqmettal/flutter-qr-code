@@ -22,29 +22,24 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, "ScansDB.db");
-    return await openDatabase(path,
-    version: 1,
-    onOpen: (db) {
-      
-    },
-    onCreate: (db, version) async {
-      await db.execute(
-        "CREATE TABLE Scans("
-        " id INTEGER PRIMARY KEY,"
-        " tipo TEXT,"
-        " valor TEXT,"
-        ")"
-      );
-    },
+    return await openDatabase(
+      path,
+      version: 1,
+      onOpen: (db) {},
+      onCreate: (db, version) async {
+        await db.execute("CREATE TABLE Scans("
+            " id INTEGER PRIMARY KEY,"
+            " tipo TEXT,"
+            " valor TEXT,"
+            ")");
+      },
     );
   }
 
   newScanRaw(ScanModel newScan) async {
-    final db  = await database;
-    final res = await db.rawInsert(
-      "INSERT INTO Scans (id, tipo, valor) "
-      "VALUES (${newScan.id}, '${newScan.tipo}', '${newScan.valor}')"
-    );
+    final db = await database;
+    final res = await db.rawInsert("INSERT INTO Scans (id, tipo, valor) "
+        "VALUES (${newScan.id}, '${newScan.tipo}', '${newScan.valor}')");
     return res;
   }
 
@@ -52,5 +47,23 @@ class DBProvider {
     final db = await database;
     final res = db.insert("Scans", nuevoScan.toJson());
     return res;
+  }
+
+  Future<ScanModel> getScanById(int id) async {
+    final db = await database;
+    final res = await db.query('Scans', where: 'id=?', whereArgs: [id]);
+    return res.isNotEmpty ? ScanModel.fromJson(res.first) : null;
+  }
+
+  Future<List<ScanModel>> getAllScans() async {
+    final db = await database;
+    final res = await db.query('Scans');
+    return res.isNotEmpty ? res.map((e) => ScanModel.fromJson(e)).toList() : [];
+  }
+
+  Future<List<ScanModel>> getScansByType(String type) async {
+    final db = await database;
+    final res = await db.rawQuery("SELECT * FROM Scans WHERE tipo='$type'");
+    return res.isNotEmpty ? res.map((e) => ScanModel.fromJson(e)).toList() : [];
   }
 }
