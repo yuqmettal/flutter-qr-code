@@ -66,16 +66,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   _scanQR() async {
-    dynamic futureString = '';
-    try {
-      futureString = await BarcodeScanner.scan();
-    } catch (e) {
-    futureString = e.toString();
-    }
-    print('Future string: ${futureString.toString()}');
+    // https://fernando-herrera.com
+    // geo:-2.8917821057165836,-79.00128736933597
+    // dynamic futureString = '';
+    // try {
+    //   futureString = await BarcodeScanner.scan();
+    // } catch (e) {
+    // futureString = e.toString();
+    // }
+    // print('Future string: ${futureString.rawContent}');
 
-    if (futureString != null) {
-      print('Tenemos informacion');
-    }
+    // if (futureString != null) {
+    //   print('Tenemos informacion');
+    // }
   }
 }
