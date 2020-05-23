@@ -1,7 +1,8 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_app/src/pages/address_page.dart';
+import 'package:qr_app/src/pages/maps_page.dart';
 import 'package:qr_app/src/pages/directions_page.dart';
+import 'package:qr_app/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -57,11 +58,11 @@ class _HomePageState extends State<HomePage> {
   _callPage(int currentPage) {
     switch (currentPage) {
       case 0:
-        return MapasPage();
+        return MapsPage();
       case 1:
         return DirectionsPage();
       default:
-        return MapasPage();
+        return MapsPage();
     }
   }
 
@@ -75,9 +76,10 @@ class _HomePageState extends State<HomePage> {
     // futureString = e.toString();
     // }
     // print('Future string: ${futureString.rawContent}');
-
-    // if (futureString != null) {
-    //   print('Tenemos informacion');
-    // }
+    dynamic futureString = 'https://fernando-herrera.com';
+    if (futureString != null) {
+      final scan = ScanModel(valor: futureString);
+      DBProvider.db.nuevoScan(scan);
+    }
   }
 }
