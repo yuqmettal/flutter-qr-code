@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:qr_app/src/providers/db_provider.dart';
+import 'package:qr_app/src/bloc/scans_bloc.dart';
+import 'package:qr_app/src/models/scan_model.dart';
 
 class MapsPage extends StatelessWidget {
+final scansBloc = new ScansBloc();
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ScanModel>>(
-      future: DBProvider.db.getAllScans(),
+    return StreamBuilder<List<ScanModel>>(
+      stream: scansBloc.scansStream,
       builder: (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -19,17 +22,20 @@ class MapsPage extends StatelessWidget {
           );
         }
         return ListView.builder(
-          itemBuilder: (context, i) => ListTile(
-            leading: Icon(
-              Icons.cloud_queue,
-              color: Theme.of(context).primaryColor,
-            ),
-            title: Text(scans[i].valor),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.grey,
-            ),
-          ),
+          itemCount: scans.length,
+          itemBuilder: (context, i) {
+            return Dismissible(
+              key: UniqueKey(),
+              background: Container(color: Colors.red),
+              onDismissed: (direction) => scansBloc.deleteScan(scans[i].id),
+              child: ListTile(
+                leading: Icon(Icons.cloud_queue,
+                    color: Theme.of(context).primaryColor),
+                title: Text(scans[i].valor),
+                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+              ),
+            );
+          },
         );
       },
     );
