@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_app/src/bloc/scans_bloc.dart';
 import 'package:qr_app/src/models/scan_model.dart';
+import 'package:qr_app/src/utils/utils.dart';
 
 class MapsPage extends StatelessWidget {
 final scansBloc = new ScansBloc();
@@ -33,6 +34,7 @@ final scansBloc = new ScansBloc();
                     color: Theme.of(context).primaryColor),
                 title: Text(scans[i].valor),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+                onTap: () => openScan(scans[i]),
               ),
             );
           },

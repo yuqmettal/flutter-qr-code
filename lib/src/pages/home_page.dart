@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_app/src/bloc/scans_bloc.dart';
 import 'package:qr_app/src/models/scan_model.dart';
 import 'package:qr_app/src/pages/maps_page.dart';
 import 'package:qr_app/src/pages/directions_page.dart';
+import 'package:qr_app/src/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -82,6 +85,15 @@ class _HomePageState extends State<HomePage> {
     if (futureString != null) {
       final scan = ScanModel(valor: futureString);
       scansBloc.addScan(scan);
+      final scan2 = ScanModel(valor: 'geo:-2.8917821057165836,-79.00128736933597');
+      scansBloc.addScan(scan2);
+      if (Platform.isIOS) {
+        Future.delayed(Duration(milliseconds: 750), (){
+          openScan(scan);
+        });
+      } else {
+        openScan(scan);
+      }
     }
   }
 }
