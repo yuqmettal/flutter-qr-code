@@ -31,7 +31,7 @@ final scansBloc = new ScansBloc();
               background: Container(color: Colors.red),
               onDismissed: (direction) => scansBloc.deleteScan(scans[i].id),
               child: ListTile(
-                leading: Icon(Icons.cloud_queue,
+                leading: Icon(Icons.map,
                     color: Theme.of(context).primaryColor),
                 title: Text(scans[i].valor),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
