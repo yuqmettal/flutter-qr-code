@@ -10,7 +10,7 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final mapController = new MapController();
 
-  String tipoMapa = 'streets';
+  String tipoMapa = 'satellite';
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class _MapPageState extends State<MapPage> {
         'pk.eyJ1IjoibXl1cXVpbGltYSIsImEiOiJja2Fsa2FsOGExMHJ6MnFtbmIwazJ0a2xkIn0.pYLYTJxtagFNYcDFBjsM1w';
     return TileLayerOptions(
       urlTemplate: 'https://api.mapbox.com/v4/'
-          '{id}/{z}/{x}/{y}@2x.png90?access_token={accessToken}',
+      '{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
       additionalOptions: {
         'accessToken': key,
         'id': 'mapbox.$tipoMapa',
@@ -63,8 +63,8 @@ class _MapPageState extends State<MapPage> {
     return MarkerLayerOptions(
       markers: <Marker>[
         Marker(
-          width: 120,
-          height: 120,
+          width: 100,
+          height: 100,
           point: scan.getLatLng(),
           builder: (context) => Container(
             child: Icon(
@@ -81,7 +81,19 @@ class _MapPageState extends State<MapPage> {
   _buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        
+        if ( tipoMapa == 'streets' ) {
+          tipoMapa = 'dark';
+        } else if ( tipoMapa == 'dark' ) {
+          tipoMapa = 'light';
+        } else if ( tipoMapa == 'light' ) {
+          tipoMapa = 'outdoors';
+        } else if ( tipoMapa == 'outdoors' ) {
+          tipoMapa = 'satellite';
+        } else {
+          tipoMapa = 'streets';
+        }
+
+        setState((){});
       },
       child: Icon(Icons.repeat),
       backgroundColor: Theme.of(context).primaryColor,
