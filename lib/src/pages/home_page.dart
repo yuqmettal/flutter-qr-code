@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_app/src/bloc/scans_bloc.dart';
 import 'package:qr_app/src/models/scan_model.dart';
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: _buildNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: _scanQR,
+        onPressed: () => _scanQR(context),
         child: Icon(Icons.filter_center_focus),
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _scanQR() async {
+  _scanQR(BuildContext context) async {
     // https://fernando-herrera.com
     // geo:-2.8917821057165836,-79.00128736933597
     // dynamic futureString = '';
@@ -89,10 +88,10 @@ class _HomePageState extends State<HomePage> {
       scansBloc.addScan(scan2);
       if (Platform.isIOS) {
         Future.delayed(Duration(milliseconds: 750), (){
-          openScan(scan);
+          openScan(context, scan);
         });
       } else {
-        openScan(scan);
+        openScan(context, scan);
       }
     }
   }

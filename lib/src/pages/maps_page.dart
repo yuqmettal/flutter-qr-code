@@ -8,6 +8,7 @@ final scansBloc = new ScansBloc();
 
   @override
   Widget build(BuildContext context) {
+    scansBloc.getScans();
     return StreamBuilder<List<ScanModel>>(
       stream: scansBloc.scansStream,
       builder: (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
@@ -34,7 +35,7 @@ final scansBloc = new ScansBloc();
                     color: Theme.of(context).primaryColor),
                 title: Text(scans[i].valor),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                onTap: () => openScan(scans[i]),
+                onTap: () => openScan(context, scans[i]),
               ),
             );
           },
